@@ -1,6 +1,7 @@
 body {
   margin: 30px auto !important;
   max-width: 600px;
+  min-width: 595px;
 }
 
 .Footer {

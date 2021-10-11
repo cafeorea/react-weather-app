@@ -107,6 +107,24 @@ export default function Weather() {
             </div>
           </form>
         </div>
+        <div className="row">
+          <div className="col-6 dateTime">
+            <p className="bottomText">
+              Last Update: <span className="dateText">Friday, Jun 3 2021</span>
+            </p>
+          </div>
+          <div className="col-6 celFarSwitch">
+            <p className="bottomText">
+              View temperature in <span className="celFarText">Fahrenheit</span>
+            </p>
+          </div>
+        </div>
+        <div className="Footer">
+          <p>
+            React Weather App built by{" "}
+            <a href="https://github.com/lincodes">Lin</a>
+          </p>
+        </div>
       </div>
     </div>
   );
