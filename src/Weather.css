@@ -12,8 +12,8 @@ body {
   font-size: 25px;
 }
 .mainIcon {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
 }
 .tempBig {
   text-align: center;
@@ -53,6 +53,8 @@ li {
 .foreIcon {
   display: block;
   margin: 0 auto;
+  width: 70px;
+  height: 70px;
   margin-bottom: 5px;
 }
 
