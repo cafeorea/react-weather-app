@@ -3,14 +3,16 @@ import axios from "axios";
 import "./Weather.css";
 import DateFormat from "./DateFormat";
 
-export default function Weather() {
+export default function Weather(props) {
   const apiKey = "34bd50dfdf721a76e86cefddc8b2767d";
   let unit = "metric";
-  let city = "Edinburgh";
+  const [city, setCity] = useState(props.defaultCity);
   const [ready, setReady] = useState(false);
   const [weatherData, setWeatherData] = useState({});
   const [forecastData, setForecastData] = useState({});
+  const [tempUnit, setTempUnit] = useState("");
   function handleResponse(response) {
+    console.log(response);
     let icon = response.data.weather[0].icon;
     setWeatherData({
       temperature: Math.round(response.data.main.temp),
@@ -25,8 +27,13 @@ export default function Weather() {
     setReady(true);
     let lat = response.data.coord.lat;
     let lon = response.data.coord.lon;
-    const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=${unit}&appid=${apiKey}`;
-    axios.get(forecastUrl).then(displayForecast);
+    if ((tempUnit === "") | (tempUnit === "°F")) {
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`;
+      axios.get(forecastUrl).then(displayForecast);
+    } else {
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=imperial&appid=${apiKey}`;
+      axios.get(forecastUrl).then(displayForecast);
+    }
   }
 
   function displayForecast(response) {
@@ -49,16 +56,47 @@ export default function Weather() {
     });
   }
 
+  function changeUnitFar(event) {
+    event.preventDefault();
+    setTempUnit("°F");
+    let farUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+    axios.get(farUrl).then(handleResponse);
+  }
+
+  function changeUnitCel(event) {
+    event.preventDefault();
+    setTempUnit("°C");
+    let farUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+    axios.get(farUrl).then(handleResponse);
+  }
+
+  function search() {
+    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${apiKey}`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search(city);
+  }
+
+  function handleCityChange(event) {
+    event.preventDefault();
+    setCity(event.target.value);
+  }
   if (ready) {
+    if (tempUnit === "") {
+      setTempUnit("°C");
+    }
     return (
       <div className="container">
         <div className="row">
           <div className="col-8 cityInfo">
-            <h1 className="cityName text-capitalize">Edinburgh</h1>
+            <h1 className="cityName text-capitalize">{city}</h1>
             <h2 className="citySummary text-capitalize">
               {weatherData.condition}
             </h2>
-            <p>
+            <p className="dateText">
               <DateFormat date={weatherData.date} />
             </p>
           </div>
@@ -72,7 +110,7 @@ export default function Weather() {
           <div className="centreTemp">
             <h2 className="tempBig">
               {weatherData.temperature}
-              <span className="celFar">°C</span>
+              <span className="celFar">{tempUnit}</span>
             </h2>
           </div>
           <div className="row">
@@ -83,8 +121,14 @@ export default function Weather() {
               </ul>
             </div>
             <div className="col-6 weatherInfo">
-              <li>Max temp: {weatherData.maxTemp}°C</li>
-              <li>Feels like: {weatherData.feelsLike}°C</li>
+              <li>
+                Max temp: {weatherData.maxTemp}
+                {tempUnit}
+              </li>
+              <li>
+                Feels like: {weatherData.feelsLike}
+                {tempUnit}
+              </li>
             </div>
           </div>
           <div className="row forecast">
@@ -95,7 +139,10 @@ export default function Weather() {
                 src={forecastData.iconUrlOne}
                 alt="Weather Icon"
               />
-              <h4 className="foreTemp foreTemp1">{forecastData.dayOne}°C</h4>
+              <h4 className="foreTemp foreTemp1">
+                {forecastData.dayOne}
+                {tempUnit}
+              </h4>
             </div>
             <div className="col forecast2">
               <h3 className="foreDay foreDay2">Wed</h3>
@@ -104,7 +151,10 @@ export default function Weather() {
                 src={forecastData.iconUrlTwo}
                 alt="Weather Icon"
               />
-              <h4 className="foreTemp foreTemp2">{forecastData.dayTwo}°C</h4>
+              <h4 className="foreTemp foreTemp2">
+                {forecastData.dayTwo}
+                {tempUnit}
+              </h4>
             </div>
             <div className="col forecast3">
               <h3 className="foreDay foreDay3">Thurs</h3>
@@ -113,7 +163,10 @@ export default function Weather() {
                 src={forecastData.iconUrlThree}
                 alt="Weather Icon"
               />
-              <h4 className="foreTemp foreTemp3">{forecastData.dayThree}°C</h4>
+              <h4 className="foreTemp foreTemp3">
+                {forecastData.dayThree}
+                {tempUnit}
+              </h4>
             </div>
             <div className="col forecast4">
               <h3 className="foreDay foreDay4">Fri</h3>
@@ -122,7 +175,10 @@ export default function Weather() {
                 src={forecastData.iconUrlFour}
                 alt="Weather Icon"
               />
-              <h4 className="foreTemp foreTemp4">{forecastData.dayFour}°C</h4>
+              <h4 className="foreTemp foreTemp4">
+                {forecastData.dayFour}
+                {tempUnit}
+              </h4>
             </div>
             <div className="col forecast5">
               <h3 className="foreDay foreDay5">Sat</h3>
@@ -131,17 +187,21 @@ export default function Weather() {
                 src={forecastData.iconUrlFive}
                 alt="Weather Icon"
               />
-              <h4 className="foreTemp foreTemp5">{forecastData.dayFive}°C</h4>
+              <h4 className="foreTemp foreTemp5">
+                {forecastData.dayFive}
+                {tempUnit}
+              </h4>
             </div>
           </div>
           <div className="Search">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-8 searchBar">
                   <input
                     type="search"
                     placeholder="Enter a city..."
                     className="form-control"
+                    onChange={handleCityChange}
                   />
                 </div>
                 <div className="col-2 submitButton">
@@ -163,7 +223,14 @@ export default function Weather() {
           </div>
           <div className="celFarSwitch">
             <p className="bottomText">
-              View temperature in <span className="celFarText">Fahrenheit</span>
+              View temperature in{" "}
+              <a className="celFarText" id="celFar" onClick={changeUnitFar}>
+                Fahrenheit
+              </a>{" "}
+              |{" "}
+              <a className="celFarText" id="celFar" onClick={changeUnitCel}>
+                Celsius
+              </a>
             </p>
           </div>
           <div className="Footer">
@@ -176,11 +243,7 @@ export default function Weather() {
       </div>
     );
   } else {
-    // const apiKey = "34bd50dfdf721a76e86cefddc8b2767d";
-    // let unit = "metric";
-    // let city = "Edinburgh";
-    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${apiKey}`;
-    axios.get(apiUrl).then(handleResponse);
+    search();
 
     return <p>Fetching data...</p>;
   }
