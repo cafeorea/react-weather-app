@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./Weather.css";
+import DateFormat from "./DateFormat";
 
 export default function Weather() {
   const apiKey = "34bd50dfdf721a76e86cefddc8b2767d";
@@ -19,6 +20,7 @@ export default function Weather() {
       iconUrl: `http://openweathermap.org/img/wn/${icon}@2x.png`,
       humidity: response.data.main.humidity,
       speed: response.data.wind.speed,
+      date: new Date(response.data.dt * 1000),
     });
     setReady(true);
     let lat = response.data.coord.lat;
@@ -56,6 +58,9 @@ export default function Weather() {
             <h2 className="citySummary text-capitalize">
               {weatherData.condition}
             </h2>
+            <p>
+              <DateFormat date={weatherData.date} />
+            </p>
           </div>
           <div className="col-4 weatherIcon">
             <img
@@ -142,7 +147,7 @@ export default function Weather() {
                 <div className="col-2 submitButton">
                   <input
                     type="submit"
-                    value="search"
+                    value="Search"
                     className="btn btn-primary"
                   />
                 </div>
@@ -156,19 +161,10 @@ export default function Weather() {
               </div>
             </form>
           </div>
-          <div className="row">
-            <div className="col-6 dateTime">
-              <p className="bottomText">
-                Last Update:{" "}
-                <span className="dateText">Friday, Jun 3 2021</span>
-              </p>
-            </div>
-            <div className="col-6 celFarSwitch">
-              <p className="bottomText">
-                View temperature in{" "}
-                <span className="celFarText">Fahrenheit</span>
-              </p>
-            </div>
+          <div className="celFarSwitch">
+            <p className="bottomText">
+              View temperature in <span className="celFarText">Fahrenheit</span>
+            </p>
           </div>
           <div className="Footer">
             <p>
@@ -186,6 +182,6 @@ export default function Weather() {
     let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${apiKey}`;
     axios.get(apiUrl).then(handleResponse);
 
-    return <p>Loading...</p>;
+    return <p>Fetching data...</p>;
   }
 }
