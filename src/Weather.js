@@ -224,13 +224,18 @@ export default function Weather(props) {
           <div className="celFarSwitch">
             <p className="bottomText">
               View temperature in{" "}
-              <a className="celFarText" id="celFar" onClick={changeUnitFar}>
+              <span className="celFarText" id="celFar" onClick={changeUnitFar}>
                 Fahrenheit
-              </a>{" "}
+              </span>{" "}
               |{" "}
-              <a className="celFarText" id="celFar" onClick={changeUnitCel}>
+              <span
+                className="celFarText"
+                id="celFar"
+                onClick={changeUnitCel}
+                href=""
+              >
                 Celsius
-              </a>
+              </span>
             </p>
           </div>
           <div className="Footer">
