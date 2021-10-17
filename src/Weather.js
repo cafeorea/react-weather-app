@@ -248,8 +248,8 @@ export default function Weather(props) {
       </div>
     );
   } else {
-    search(props.defaultCity);
+    return search(props.defaultCity);
 
-    return <p>Fetching data...</p>;
+    // return <p>Fetching data...</p>;
   }
 }
