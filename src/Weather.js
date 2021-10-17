@@ -248,7 +248,7 @@ export default function Weather(props) {
       </div>
     );
   } else {
-    search();
+    search(props.defaultCity);
 
     return <p>Fetching data...</p>;
   }
