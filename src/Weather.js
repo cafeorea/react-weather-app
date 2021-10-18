@@ -19,7 +19,7 @@ export default function Weather(props) {
       feelsLike: Math.round(response.data.main.feels_like),
       maxTemp: Math.round(response.data.main.temp_max),
       condition: response.data.weather[0].description,
-      iconUrl: `http://openweathermap.org/img/wn/${icon}@2x.png`,
+      iconUrl: `https://openweathermap.org/img/wn/${icon}@2x.png`,
       humidity: response.data.main.humidity,
       speed: response.data.wind.speed,
       date: new Date(response.data.dt * 1000),
@@ -44,34 +44,34 @@ export default function Weather(props) {
     let iconFive = response.data.daily[5].weather[0].icon;
     setForecastData({
       dayOne: Math.round(response.data.daily[1].temp.max),
-      iconUrlOne: `http://openweathermap.org/img/wn/${iconOne}@2x.png`,
+      iconUrlOne: `https://openweathermap.org/img/wn/${iconOne}@2x.png`,
       dayTwo: Math.round(response.data.daily[2].temp.max),
-      iconUrlTwo: `http://openweathermap.org/img/wn/${iconTwo}@2x.png`,
+      iconUrlTwo: `https://openweathermap.org/img/wn/${iconTwo}@2x.png`,
       dayThree: Math.round(response.data.daily[3].temp.max),
-      iconUrlThree: `http://openweathermap.org/img/wn/${iconThree}@2x.png`,
+      iconUrlThree: `https://openweathermap.org/img/wn/${iconThree}@2x.png`,
       dayFour: Math.round(response.data.daily[4].temp.max),
-      iconUrlFour: `http://openweathermap.org/img/wn/${iconFour}@2x.png`,
+      iconUrlFour: `https://openweathermap.org/img/wn/${iconFour}@2x.png`,
       dayFive: Math.round(response.data.daily[5].temp.max),
-      iconUrlFive: `http://openweathermap.org/img/wn/${iconFive}@2x.png`,
+      iconUrlFive: `https://openweathermap.org/img/wn/${iconFive}@2x.png`,
     });
   }
 
   function changeUnitFar(event) {
     event.preventDefault();
     setTempUnit("°F");
-    let farUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+    let farUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
     axios.get(farUrl).then(handleResponse);
   }
 
   function changeUnitCel(event) {
     event.preventDefault();
     setTempUnit("°C");
-    let farUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+    let farUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
     axios.get(farUrl).then(handleResponse);
   }
 
   function search() {
-    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${apiKey}`;
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${apiKey}`;
     axios.get(apiUrl).then(handleResponse);
   }
 
