@@ -12,7 +12,6 @@ export default function Weather(props) {
   const [forecastData, setForecastData] = useState({});
   const [tempUnit, setTempUnit] = useState("");
   function handleResponse(response) {
-    console.log(response);
     let icon = response.data.weather[0].icon;
     setWeatherData({
       temperature: Math.round(response.data.main.temp),
@@ -27,7 +26,7 @@ export default function Weather(props) {
     setReady(true);
     let lat = response.data.coord.lat;
     let lon = response.data.coord.lon;
-    if ((tempUnit === "") | (tempUnit === "°F")) {
+    if (tempUnit === "" || tempUnit === "°F") {
       const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`;
       axios.get(forecastUrl).then(displayForecast);
     } else {
