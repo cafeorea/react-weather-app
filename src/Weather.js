@@ -26,13 +26,8 @@ export default function Weather(props) {
     setReady(true);
     let lat = response.data.coord.lat;
     let lon = response.data.coord.lon;
-    if (tempUnit === "" || tempUnit === "°F") {
-      const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`;
-      axios.get(forecastUrl).then(displayForecast);
-    } else {
-      const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=imperial&appid=${apiKey}`;
-      axios.get(forecastUrl).then(displayForecast);
-    }
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`;
+    axios.get(forecastUrl).then(displayForecast);
   }
 
   function displayForecast(response) {
@@ -84,8 +79,25 @@ export default function Weather(props) {
     setCity(event.target.value);
   }
   if (ready) {
+    let tempOne = forecastData.dayOne;
+    let tempTwo = forecastData.dayTwo;
+    let tempThree = forecastData.dayThree;
+    let tempFour = forecastData.dayFour;
+    let tempFive = forecastData.dayFive;
     if (tempUnit === "") {
       setTempUnit("°C");
+    }
+    if (tempUnit === "°F") {
+      tempOne = (tempOne * 9) / 5 + 32;
+      tempOne = Math.round(tempOne);
+      tempTwo = (tempTwo * 9) / 5 + 32;
+      tempTwo = Math.round(tempTwo);
+      tempThree = (tempThree * 9) / 5 + 32;
+      tempThree = Math.round(tempThree);
+      tempFour = (tempFour * 9) / 5 + 32;
+      tempFour = Math.round(tempFour);
+      tempFive = (tempFive * 9) / 5 + 32;
+      tempFive = Math.round(tempFive);
     }
     return (
       <div className="container">
@@ -139,7 +151,7 @@ export default function Weather(props) {
                 alt="Weather Icon"
               />
               <h4 className="foreTemp foreTemp1">
-                {forecastData.dayOne}
+                {tempOne}
                 {tempUnit}
               </h4>
             </div>
@@ -151,7 +163,7 @@ export default function Weather(props) {
                 alt="Weather Icon"
               />
               <h4 className="foreTemp foreTemp2">
-                {forecastData.dayTwo}
+                {tempTwo}
                 {tempUnit}
               </h4>
             </div>
@@ -163,7 +175,7 @@ export default function Weather(props) {
                 alt="Weather Icon"
               />
               <h4 className="foreTemp foreTemp3">
-                {forecastData.dayThree}
+                {tempThree}
                 {tempUnit}
               </h4>
             </div>
@@ -175,7 +187,7 @@ export default function Weather(props) {
                 alt="Weather Icon"
               />
               <h4 className="foreTemp foreTemp4">
-                {forecastData.dayFour}
+                {tempFour}
                 {tempUnit}
               </h4>
             </div>
@@ -187,7 +199,7 @@ export default function Weather(props) {
                 alt="Weather Icon"
               />
               <h4 className="foreTemp foreTemp5">
-                {forecastData.dayFive}
+                {tempFive}
                 {tempUnit}
               </h4>
             </div>
